@@ -6,6 +6,8 @@
 class HelloWorld : public cocos2d::Layer
 {
 public:
+    HelloWorld();
+	~HelloWorld();
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
 
@@ -17,6 +19,24 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
+    
+    void spriteMoveFinished(cocos2d::Node* sender);
+    
+	void gameLogic(float dt);
+    
+	void updateGame(float dt);
+    
+	//virtual void registerWithTouchDispatcher();
+
+protected:
+	cocos2d::Array*_targets;
+	cocos2d::Array*_projectiles;
+	int _projectilesDestroyed;
+    
+private:
+	void addTarget();
+    
+	//void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
 };
 
 #endif // __HELLOWORLD_SCENE_H__
