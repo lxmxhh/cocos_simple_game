@@ -13,6 +13,8 @@
 bin/
 gen/
 
+assets/
+
 # Gradle files
 .gradle/
 build/
