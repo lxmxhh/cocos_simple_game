@@ -57,18 +57,16 @@ def select_toolchain_version():
     ndk-r9   -> use gcc4.8
     '''
 
-    ndk_root = "/Users/samxu/Documents/devtools/android-ndk-r9c" #check_environment_variables()
+    ndk_root = check_environment_variables()
     if os.path.isdir(os.path.join(ndk_root,"toolchains/arm-linux-androideabi-4.8")):
         os.environ['NDK_TOOLCHAIN_VERSION'] = '4.8'
         print "The Selected NDK toolchain version was 4.8 !"
     elif os.path.isdir(os.path.join(ndk_root,"toolchains/arm-linux-androideabi-4.7")):
-        os.environ['NDK_TOOLCHAIN_VERSION'] = '4.8'
+        os.environ['NDK_TOOLCHAIN_VERSION'] = '4.7'
         print "The Selected NDK toolchain version was 4.7 !"
     else:
         print "Couldn't find the gcc toolchain."
         exit(1)
-
-    os.environ['NDK_TOOLCHAIN_VERSION'] = '4.8'
 
 def do_build(cocos_root, ndk_root, app_android_root,ndk_build_param,sdk_root,android_platform,build_mode):
 
@@ -129,7 +127,7 @@ def copy_resources(app_android_root):
 
 def build(ndk_build_param,android_platform,build_mode):
 
-    ndk_root = "/Users/samxu/Documents/devtools/android-ndk-r9c" #check_environment_variables()
+    ndk_root = check_environment_variables()
     sdk_root = None
     select_toolchain_version()
 

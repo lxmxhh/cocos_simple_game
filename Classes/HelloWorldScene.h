@@ -2,6 +2,7 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
+//#include <vector>
 
 class HelloWorld : public cocos2d::Layer
 {
@@ -29,8 +30,9 @@ public:
 	//virtual void registerWithTouchDispatcher();
 
 protected:
-	cocos2d::Array*_targets;
-	cocos2d::Array*_projectiles;
+	cocos2d::__Array* _targets;
+	cocos2d::__Array* _projectiles;
+    //std::vector<cocos2d::Sprite*> _vTargets;
 	int _projectilesDestroyed;
     
 private:

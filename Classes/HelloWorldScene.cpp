@@ -98,27 +98,57 @@ bool HelloWorld::init()
     // add the sprite as a child to this layer
     this->addChild(sprite, 0);
     
+    //测试代码
+//    Vector<Value*>* vecV = new Vector<Value*>();
+// 
+//    Value* val1 = new Value(1);
+//    Value* val2 = new Value(2);
+//
+//    vecV->pushBack(val1);
+//    vecV->pushBack(val2);
     
+    Value val("-656A");
+
+    if ( val.isNull() )
+    {
+        CCLOG("========= val is null ==============");
+    }
+    else{
+        std::string strValDesc = val.getDescription();
+        CCLOG("======== val is %s ============ ", strValDesc.c_str());
+        
+        CCLOG("========= val.asByte() = %c ==========",val.asByte());
+        CCLOG("========= val.asInt() = %d ==========",val.asInt());
+        CCLOG("========= val.asString() = %s ==========",val.asString().c_str());
+    }
+    
+    //生成玩家
     cocos2d::Size winSize = Director::getInstance()->getWinSize();
     Sprite *player = Sprite::create("Player.png",
                                     cocos2d::Rect(0, 0, 27, 40) );
     player->setPosition( Point(player->getContentSize().width/2, winSize.height/2) );
     this->addChild(player);
     
-    this->schedule( schedule_selector(HelloWorld::gameLogic), 1.0 );
+    //设置schedule，每1秒生成1个怪物
+    this->schedule( schedule_selector(HelloWorld::gameLogic), 0.5 );
     
-    this->setTouchEnabled(true);
+    //this->setTouchEnabled(true);
     
     //_targets = CCArray::create();
-    _targets = new Array();
-    _targets->init();
+    //_targets = new Array();
+    
+    _targets = __Array::create();
+    _targets->retain();
+    //_targets->init();
     //_projectiles = CCArray::create();
-    _projectiles = new Array();
-    _projectiles->init();
+    //_projectiles = new Array();
+    _projectiles = __Array::create();
+    _projectiles->retain();
+    //_projectiles->init();
     
     // use updateGame instead of update, otherwise it will conflit with SelectorProtocol::update
     // see http://www.cocos2d-x.org/boards/6/topics/1478
-    this->schedule( schedule_selector(HelloWorld::updateGame) );
+    //this->schedule( schedule_selector(HelloWorld::updateGame) );
     
     return true;
 }
@@ -151,11 +181,16 @@ void HelloWorld::addTarget()
 
     // Create the actions
 	FiniteTimeAction* actionMove = MoveTo::create( (float)actualDuration,
-                                                  Point(0 - target->getContentSize().width/2, actualY) );
+                                                  Point(0 - target->getContentSize().width/2, winSize.height/2));//actualY) );
+    
+    // 设置结束的action
 	FiniteTimeAction* actionMoveDone = CallFuncN::create( CC_CALLBACK_1(HelloWorld::spriteMoveFinished, this));
 
+    // 设置动作序列, 完成actionMove后, 执行actionMoveDone
 	target->runAction( Sequence::create(actionMove, actionMoveDone, NULL) );
-	// Create the actions
+
+	// deprecated calls
+    //Create the actions
 //	CCFiniteTimeAction* actionMove =
 //    CCMoveTo::initWithDuration( (float)actualDuration,
 //                                 Point(0 - target->getContentSize().width/2, actualY) );
@@ -168,6 +203,7 @@ void HelloWorld::addTarget()
 	// Add to targets array
 	target->setTag(1);
 	_targets->addObject(target);
+    //_vTargets.push_back(target);
 }
 
 void HelloWorld::spriteMoveFinished(Node* sender)
@@ -178,7 +214,16 @@ void HelloWorld::spriteMoveFinished(Node* sender)
 	if (sprite->getTag() == 1)  // target
 	{
 		_targets->removeObject(sprite);
-        
+//        std::vector<Sprite*>::iterator it = _vTargets.begin();
+//        std::vector<Sprite*>::iterator itEnd = _vTargets.end();
+//        for (; it != itEnd; ++it) {
+//            if ( *it == sprite )
+//            {
+//                _vTargets.erase(it);
+//                break;
+//            }
+//        }
+//        
 //		GameOverScene *gameOverScene = GameOverScene::node();
 //		gameOverScene->getLayer()->getLabel()->setString("You Lose :[");
 //		CCDirector::sharedDirector()->replaceScene(gameOverScene);
@@ -192,11 +237,13 @@ void HelloWorld::spriteMoveFinished(Node* sender)
 
 void HelloWorld::gameLogic(float dt)
 {
+    //生成怪物
 	this->addTarget();
 }
 
 void HelloWorld::updateGame(float dt)
 {
+    //CCLOG("========= test =========");
 }
 
 void HelloWorld::menuCloseCallback(Object* pSender)
