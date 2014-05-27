@@ -1,4 +1,6 @@
 #include "HelloWorldScene.h"
+#include "cocos-ext.h"
+#include "cocostudio/CCArmature.h"
 
 USING_NS_CC;
 
@@ -122,6 +124,18 @@ bool HelloWorld::init()
         CCLOG("========= val.asString() = %s ==========",val.asString().c_str());
     }
     
+    cocostudio::ArmatureDataManager::getInstance()->addArmatureFileInfo(
+                "/Users/samxu/Documents/project/cocos_proj/MyGame/Resources/skill.png",
+                "/Users/samxu/Documents/project/cocos_proj/MyGame/Resources/skill.plist",
+                "/Users/samxu/Documents/project/cocos_proj/MyGame/Resources/skill.xml" );
+    cocostudio::Armature* __armature = cocostudio::Armature::create("skill");
+    __armature->getAnimation()->playByIndex(0,-1, 999);
+    __armature->setPosition(300, 300);
+    __armature->getAnimation()->setSpeedScale(.2f);
+    addChild(__armature);
+    
+    
+    
     //生成玩家
     cocos2d::Size winSize = Director::getInstance()->getWinSize();
     Sprite *player = Sprite::create("Player.png",
@@ -171,6 +185,11 @@ void HelloWorld::addTarget()
                         Point(winSize.width + (target->getContentSize().width/2),
                             Director::getInstance()->getVisibleOrigin().y + actualY) );
 	this->addChild(target);
+    
+    //cocos2d::CCPoint pt = layer->convertTouchToNodeSpace(touch);
+    
+    cocos2d::Size frameSize = Director::getInstance()->getOpenGLView()->getFrameSize();
+    cocos2d::Size windowSize = Director::getInstance()->getWinSize();
     
 	// Determine speed of the target
 	int minDuration = (int)2.0;
